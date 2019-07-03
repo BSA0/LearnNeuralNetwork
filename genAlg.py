@@ -30,6 +30,8 @@ def gen_children(anims, xs, ys, de):
 		while rand > 0:
 			rand -= chances[i]
 			i += 1
+		if i >= chances:
+			i -= 1
 		return i
 	
 	children = [[0, 0] for i in range(len(anims)//2)]
@@ -67,9 +69,9 @@ it = 100000
 for i in range(it):
 	anims = sorted(anims, key=lambda anim: sum_dis(anim[0], anim[1], xs, ys))
 	alive = anims[:len(anims)//2]
-	if i % 10000 == 0 and i != 0:
+	if i % 5000 == 0 and i != 0:
 		de *= 10
-		print(anims[0])
+		print(anims[0], de)
 	children = gen_children(anims, xs, ys, de)
 	anims = alive + children
 	
