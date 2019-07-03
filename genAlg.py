@@ -20,8 +20,7 @@ def gen_children(anims, xs, ys, de):
 	distances = [sum_dis(i[0], i[1], xs, ys) for i in anims]
 	
 	sum_d = sum(distances)
-	
-	
+
 	chances = [sum_d / distances[i] for i in range(len(distances))]
 	
 	def random_num(chances):
@@ -30,7 +29,7 @@ def gen_children(anims, xs, ys, de):
 		while rand > 0:
 			rand -= chances[i]
 			i += 1
-		if i >= chances:
+		if i >= len(chances):
 			i -= 1
 		return i
 	
@@ -63,14 +62,14 @@ if os.path.exists('anim.txt'):
 else:
 	anims = [[rnd.random() * 10, rnd.random() * 10] for i in range(30)]
 
-de = 1
+de = 10000
 it = 100000
 
 for i in range(it):
 	anims = sorted(anims, key=lambda anim: sum_dis(anim[0], anim[1], xs, ys))
 	alive = anims[:len(anims)//2]
 	if i % 5000 == 0 and i != 0:
-		de *= 10
+		# de *= 10
 		print(anims[0], de)
 	children = gen_children(anims, xs, ys, de)
 	anims = alive + children
