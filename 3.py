@@ -6,8 +6,8 @@ import json
 neurons_count = 10
 centres_count = 10
 sensors_count = 15
-learn_count = 10000
-activate_level = 33
+learn_count = 100000
+activate_level = 31
 sensors = [0] * sensors_count
 
 rates = []
@@ -34,12 +34,6 @@ if os.path.exists('center_decision.txt'):
 
 if not (len(center_decision) == centres_count and len(center_decision[0]) == neurons_count):
 	center_decision = [[0] * neurons_count] * centres_count
-
-print(*rates, sep='\n')
-print("--")
-print(*center_decision, sep='\n')
-input()
-
 
 f = open("input.txt")  # Считываем тесты
 s = f.readline()
@@ -76,8 +70,6 @@ for learn_pos in range(learn_count):  # Обучение
 				rates[i][k] -= 1
 		output.append(1 if v >= activate_level else 0)
 	
-	print("out", numTrue, output)
-	
 	for i in range(centres_count):  # i - номер центра принятия решения
 		v = 0  # значение на центре
 		centres_triggered = []
@@ -87,19 +79,13 @@ for learn_pos in range(learn_count):  # Обучение
 				centres_triggered.append(j)
 		# ругаем за ошибки
 		if numTrue == i and v < activate_level:  # не узнал своего
-			print('miss1', numTrue, i, v, activate_level)
-			print(center_decision[i])
 			for k in centres_triggered:
 				center_decision[i][k] += 1
-			print(center_decision[i])
 		elif numTrue != i and v >= activate_level:  # признал чужого
-			print('miss2', numTrue, i, v, activate_level)
-			print(center_decision[i])
 			for k in centres_triggered:
 				center_decision[i][k] -= 1
-			print(center_decision[i])
 		result.append(1 if v >= activate_level else 0)
-	print('res', numTrue, result)
+	print(numTrue, result)
 	
 
 f = open('rates.txt', 'w')
