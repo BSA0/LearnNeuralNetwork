@@ -1,4 +1,5 @@
 import random as rnd
+import time
 import os
 
 
@@ -34,7 +35,7 @@ if os.path.exists('rates.txt'):
 	f = open('rates.txt')
 	s = f.readline()
 	while s:
-		rates.append(list(map(int, s.split())))
+		rates.append(list(map(float, s.split())))
 		s = f.readline()
 	f.close()
 
@@ -52,7 +53,7 @@ if os.path.exists('center_decision.txt'):
 	f = open('center_decision.txt')
 	s = f.readline()
 	while s:
-		center_decision.append(list(map(int, s.split())))
+		center_decision.append(list(map(float, s.split())))
 		s = f.readline()
 	f.close()
 
@@ -78,7 +79,9 @@ while s:
 f.close()
 
 test_count = len(tests)
-	
+
+t = time.perf_counter()
+
 for learn_pos in range(learn_count):  # Обучение
 	test_num = rnd.randint(0, test_count - 1)
 	sensors = tests[test_num][1]
@@ -86,9 +89,8 @@ for learn_pos in range(learn_count):  # Обучение
 	
 	output, rates = teach_analyzers(rates, sensors, numTrue, neurons_count, activate_level)
 	result, center_decision = teach_analyzers(center_decision, output, numTrue, centres_count, activate_level)
-	
-	if learn_pos % 10000 == 0:
-		print(learn_pos)
+
+print(time.perf_counter() - t)
 
 f = open('rates.txt', 'w')
 print(*rates, sep='\n')
