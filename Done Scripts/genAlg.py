@@ -5,7 +5,7 @@ import pprint as pp
 
 
 def random_exp(d=5, ex=1):
-		return rnd.randint(-1 * d, d) / ex
+	return rnd.randint(-1 * d, d) / ex
 
 
 def sum_dis(x0, y0, xs, ys):
