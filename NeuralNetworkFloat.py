@@ -1,5 +1,6 @@
 import os
 from math import e
+import numpy as np
 import random as rnd
 from time import perf_counter as pc
 
