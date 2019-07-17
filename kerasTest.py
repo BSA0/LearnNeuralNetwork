@@ -19,7 +19,7 @@ img_width, img_height = 104, 23
 # backend Tensorflow, channels_last
 input_shape = (img_width, img_height, 3)
 # Количество эпох
-epochs = 30
+epochs = 100
 # Размер мини-выборки
 batch_size = 16
 # Количество изображений для обучения
@@ -37,9 +37,12 @@ if os.path.exists(r"E:\CropNums\my_model.h5"):
                   metrics=['accuracy'])
 else:
     model = Sequential()
-    model.add(Conv2D(64, (3, 3), input_shape=input_shape))  # , activation='relu'))
+    model.add(Conv2D(64, (3, 3), input_shape=input_shape, activation='relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Flatten())
+
+    model.add(Dense(250, activation='relu'))
+    model.add(Dropout(0.5))
 
     model.add(Dense(64, activation='relu'))
     model.add(Dropout(0.5))
@@ -84,14 +87,12 @@ print("Аккуратность на тестовых данных: %.2f%%" % (s
 
 model.summary()
 model.save(r"E:\CropNums\my_model.h5")
-plot_model(model, to_file=r'C:\Users\belok\PycharmProjects\LearnNeuralNetwork\model.png')
 
-img_arr = cv.imread("num2.bmp", 1)
-# new_arr = cv.resize(img_arr, (104, 23))
-# new_arr = new_arr.reshape(104, 23, 3)
-cv.imshow("1", img_arr)
-cv.waitKey(0)
-cv.destroyAllWindows()
+
+from keras.utils import plot_model
+plot_model(model, to_file='model.png')
+
+img_arr = cv.imread("notnum2.bmp", 1)
 img_arr = img_arr.reshape(-1, 104, 23, 3)
 
 print(model.predict(img_arr))
