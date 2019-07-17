@@ -12,10 +12,13 @@ global_wrongi = len(os.listdir(wrongpath))
 global_correcti = len(os.listdir(correctpath))
 
 folder = os.listdir(numspath)
-mx = len(folder)
+mxa = len(folder)
+print(mxa)
 for i in range(1000):
-    num = random.randint(0, mx)
-    img = cv.imread(os.path.join(numspath, folder[num]), 0)
+    numa = random.randint(0, mxa)
+    print(mxa, numa, len(folder))
+    print(folder[numa])
+    img = cv.imread(os.path.join(numspath, folder[numa]), 0)
 
     imgScale = 2
     newX, newY = img.shape[1] * imgScale, img.shape[0] * imgScale
@@ -79,13 +82,15 @@ for i in range(1000):
             for i in range(len(box)):
                 cv.circle(copyimg, (box[i][0] + 50, box[i][1] + 50), 3, colors[i], -1)
             cv.putText(copyimg, '{}'.format(j), (box[0][0] + 50, box[0][1] + 50), cv.FONT_HERSHEY_SIMPLEX, 0.5,
-                       (64, 64, 64), 1, cv.LINE_AA)
+                       (0, 128, 255), 1, cv.LINE_AA)
 
     f = True
 
     while f:
         cv.imshow("ImageOC", copyimg)
-        cv.waitKey(0)
+        k = -1
+        k = cv.waitKey(0)
+        cv.destroyAllWindows()
         print(crops.keys())
 
         command = input()
@@ -103,7 +108,9 @@ for i in range(1000):
 
         if crops.get(command) is not None:
             cv.imshow("Image{}".format(command), crops.get(command))
-            cv.waitKey(0)
+            k = -1
+            k = cv.waitKey(0)
+            cv.destroyAllWindows()
             cmd = input()
             if cmd == 'y':
                 cv.imwrite(os.path.join(correctpath, 'num{}.bmp'.format(global_correcti)), crops.get(command))
@@ -120,6 +127,7 @@ for i in range(1000):
                 for pic in crops:
                     cv.imwrite(os.path.join(wrongpath, 'notnum{}.bmp'.format(global_wrongi)), crops.get(pic))
                     global_wrongi += 1
+
 
 
 # cv.imshow("ImageO", img)
